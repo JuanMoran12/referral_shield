@@ -14,13 +14,16 @@ if not os.path.exists(DB_FILE):
         writer = csv.writer(f)
         writer.writerow(["referrer_email", "referee_email"])
 
+
 class ReferralRequest(BaseModel):
     referrer_email: EmailStr
     referee_email: EmailStr
 
+
 @app.get("/")
-def read_root(): #Punto de entrada para verificar que la API está funcionando
+def read_root():  #Punto de entrada para verificar que la API está funcionando
     return {"message": "API de Referrals funcionando correctamente."}
+
 
 @app.post("/referral")
 def handle_referral(data: ReferralRequest):
@@ -31,21 +34,28 @@ def handle_referral(data: ReferralRequest):
     # --- Validaciones antifraude básicas ---
     # Comparar emails normalizados para evitar bypass con alias
     if referrer == referee:
-        raise HTTPException(status_code=400, detail="Fraude: el referido no puede ser el mismo referidor.")
-    
+        raise HTTPException(
+            status_code=400,
+            detail="Fraude: el referido no puede ser el mismo referidor.")
+
     # Verificar límite de referrals por persona (usando email normalizado)
     referral_count = count_referrals(referrer)
     if referral_count >= MAX_REFERRALS_PER_USER:
         raise HTTPException(
-            status_code=400, 
-            detail=f"Fraude: el referidor ha excedido el límite de {MAX_REFERRALS_PER_USER} referencias."
+            status_code=400,
+            detail=
+            f"Fraude: el referidor ha excedido el límite de {MAX_REFERRALS_PER_USER} referencias."
         )
 
     if not validate_email_pattern(referee):
-        raise HTTPException(status_code=400, detail="Fraude: el email del referido parece inválido o sospechoso.")
+        raise HTTPException(
+            status_code=400,
+            detail="Fraude: el email del referido parece inválido o sospechoso."
+        )
 
     if email_exists(referee):
-        raise HTTPException(status_code=400, detail="Fraude: el referido ya está registrado.")
+        raise HTTPException(status_code=400,
+                            detail="Fraude: el referido ya está registrado.")
 
     # --- Registrar en CSV (base simulada) ---
     with open(DB_FILE, "a", newline="") as f:
@@ -72,7 +82,9 @@ def email_exists(email: str) -> bool:
 
 def validate_email_pattern(email: str) -> bool:
     """Chequeos simples para detectar correos sospechosos."""
-    suspicious_patterns = ["test@", "fake@", "temp@", "mailinator", "example.com"]
+    suspicious_patterns = [
+        "test@", "fake@", "temp@", "mailinator", "example.com"
+    ]
     return not any(pat in email for pat in suspicious_patterns)
 
 
@@ -85,20 +97,20 @@ def normalize_email(email: str) -> str:
     - user+test@other.com -> user@other.com
     """
     email = email.lower().strip()
-    
+
     if '@' not in email:
         return email
-    
+
     username, domain = email.split('@', 1)
-    
+
     # Remover todo después del signo +
     if '+' in username:
         username = username.split('+')[0]
-    
+
     # Para Gmail/Googlemail, remover puntos del username
     if domain in ['gmail.com', 'googlemail.com']:
         username = username.replace('.', '')
-    
+
     return f"{username}@{domain}"
 
 
