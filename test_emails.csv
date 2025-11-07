@@ -1,0 +1,16 @@
+test_type,referrer_email,referee_email,expected_result,notes
+valid,alice@company.com,bob@company.com,success,Normal valid referral
+valid,sarah@startup.io,mike@gmail.com,success,Different domains
+valid,john.doe@business.org,jane.smith@service.net,success,Professional emails
+fraud_same_person,user@domain.com,user@domain.com,fraud,Same person referring themselves
+fraud_suspicious,valid@real.com,test@example.com,fraud,Test email pattern detected
+fraud_suspicious,real.person@gmail.com,fake@mailinator.com,fraud,Temporary email service
+fraud_suspicious,legit@company.com,temp@tempmail.com,fraud,Temporary email pattern
+fraud_duplicate,first@email.com,duplicate@test.com,success_first_time,Will be used to test duplicate
+fraud_duplicate,second@email.com,duplicate@test.com,fraud,Duplicate referee (if run after previous)
+valid,maria@tech.com,carlos@developer.io,success,International names
+valid,admin@store.com,customer@buyer.net,success,Business referral
+fraud_suspicious,normal@domain.com,fake@test.org,fraud,Contains 'fake' pattern
+valid,referrer1@site.com,newuser1@email.com,success,Sequential test 1
+valid,referrer2@site.com,newuser2@email.com,success,Sequential test 2
+valid,referrer3@site.com,newuser3@email.com,success,Sequential test 3
