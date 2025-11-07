@@ -59,12 +59,15 @@ Este endpoint maneja el registro de nuevos referidos, aplicando varias validacio
     - `Fraude: el email del referido parece inválido o sospechoso.`
     - `Fraude: el referido ya está registrado.`
 
+- **Endpoints de prueba:**
+
+
 ## Screenshots
 
-| Codigo400.png | Codigo200.png | Codigo200.png |
-|-------------|----------|---------|
-| ![](images/I1.png) | ![](images/I2.png) | ![](images/I3.png) |
+| Codigo400.png | Codigo200.png |
+|---------------|---------------|
+| ![](images/I1.png) | ![](images/I2.png) |
 
 | Codigo200.png | Codigo200.png |
-|--------------|---------|
-| ![](images/I4.png) | ![](images/I5.png) |
+|---------------|---------------|
+| ![](images/I3.png) | ![](images/I4.png) |
